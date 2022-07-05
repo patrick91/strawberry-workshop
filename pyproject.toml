@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "strawberry-workshop"
+version = "0.1.0"
+description = ""
+authors = ["Patrick Arminio <patrick.arminio@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+strawberry-graphql = "^0.116.3"
+Django = "^4.0.6"
+typer = "^0.4.2"
+podcastparser = "^0.6.8"
+rich = "^12.4.4"
+Pillow = "^9.2.0"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.961"
+flake8 = "^4.0.1"
+black = {version = "^22.6.0", allow-prereleases = true}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+indent = 4
+combine_star = true
+combine_as_imports = true
+lines_after_imports = 2
+known_django = ["django"]
+known_strawberry = ["strawberry"]
+known_pytest = ["pytest"]
+sections = ["FUTURE", "STDLIB", "PYTEST", "THIRDPARTY", "DJANGO", "STRAWBERRY", "FIRSTPARTY", "LOCALFOLDER"]
