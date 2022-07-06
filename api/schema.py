@@ -2,6 +2,8 @@ import strawberry
 
 from db import data, models
 
+from .authentication.mutation import AuthenticationMutation
+
 
 @strawberry.type
 class Podcast:
@@ -30,4 +32,9 @@ class Query:
         return None
 
 
-schema = strawberry.Schema(query=Query)
+@strawberry.type
+class Mutation(AuthenticationMutation):
+    ...
+
+
+schema = strawberry.Schema(query=Query, mutation=Mutation)
