@@ -44,3 +44,6 @@ addopts = "-s"
 DJANGO_SETTINGS_MODULE = "podcast.settings"
 testpaths = ["tests/"]
 # asyncio_mode = "auto"
+
+[tool.mypy]
+plugins = ["strawberry.ext.mypy_plugin"]
