@@ -1,4 +1,5 @@
 from asgiref.sync import sync_to_async
+from cursor_pagination import CursorPaginator
 
 from users.models import User
 
@@ -23,3 +24,19 @@ async def subscribe_to_podcast(user: User, podcast: models.Podcast) -> None:
         podcast.subscribers.add(user)
 
     await sync_to_async(_subscribe_to_podcast)()
+
+
+async def find_podcasts(
+    query: str, first: int = 10, after: str | None = None
+) -> tuple[list[models.Podcast], list[str]]:
+    def _find():
+        podcasts = models.Podcast.objects.filter(title__icontains=query)
+
+        paginator = CursorPaginator(podcasts, ordering=("title", "-id"))
+        page = paginator.page(first=first, after=after)
+
+        items = list(page)
+
+        return items, [paginator.cursor(item) for item in items]
+
+    return await sync_to_async(_find)()
