@@ -1,5 +1,6 @@
 import strawberry
 
+from api.pagination.types import Connection, Edge, PageInfo
 from db import data
 
 from .types import Podcast
@@ -20,7 +21,7 @@ class PodcastsQuery:
         query: str,
         first: int = 10,
         after: strawberry.ID | None = strawberry.UNSET,
-    ) -> list[Podcast]:
+    ) -> Connection[Podcast]:
         # TODO: enforce max first
 
         paginated_cursors = await data.find_podcasts(
@@ -29,12 +30,17 @@ class PodcastsQuery:
             after=str(after) if after is not strawberry.UNSET else None,
         )
 
-        # temporary hack
-        results = []
+        page_info = PageInfo(
+            has_next_page=False,
+            has_previous_page=False,
+            start_cursor=None,
+            end_cursor=None,
+        )
 
-        for edge in paginated_cursors.edges:
-            podcast = Podcast.from_db(edge.node)
-            podcast.id = edge.cursor
-            results.append(podcast)
-
-        return results
+        return Connection(
+            page_info=page_info,
+            edges=[
+                Edge(node=Podcast.from_db(edge.node), cursor=edge.cursor)
+                for edge in paginated_cursors.edges
+            ],
+        )

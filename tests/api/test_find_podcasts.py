@@ -10,8 +10,12 @@ pytestmark = pytest.mark.django_db
 FIND_PODCASTS_QUERY = """
     query FindPodcasts($query: String!, $first: Int! = 10, $after: ID) {
         findPodcasts(query: $query, first: $first, after: $after) {
-            id
-            title
+            edges {
+                node {
+                    title
+                }
+                cursor
+            }
         }
     }
 """
@@ -29,7 +33,7 @@ def test_returns_empty_list_when_there_is_no_podcast(client):
 
     data = response.json()
 
-    assert data == {"data": {"findPodcasts": []}}
+    assert data == {"data": {"findPodcasts": {"edges": []}}}
 
 
 def test_returns_podcasts_when_title_matches(client):
@@ -46,8 +50,9 @@ def test_returns_podcasts_when_title_matches(client):
     )
 
     data = response.json()
+    edges = data["data"]["findPodcasts"]["edges"]
 
-    assert data["data"]["findPodcasts"][0]["title"] == "GraphQL"
+    assert edges[0]["node"]["title"] == "GraphQL"
 
 
 def test_can_paginate(client):
@@ -64,24 +69,22 @@ def test_can_paginate(client):
     )
 
     data = response.json()
+    edges = data["data"]["findPodcasts"]["edges"]
 
-    podcasts = data["data"]["findPodcasts"]
-
-    assert len(podcasts) == 1
-    assert podcasts[0]["title"] == "Podcast A"
+    assert len(edges) == 1
+    assert edges[0]["node"]["title"] == "Podcast A"
 
     response = client.post(
         "/graphql",
         data={
             "query": FIND_PODCASTS_QUERY,
-            "variables": {"query": "Podcast", "first": 1, "after": podcasts[0]["id"]},
+            "variables": {"query": "Podcast", "first": 1, "after": edges[0]["cursor"]},
         },
         content_type="application/json",
     )
 
     data = response.json()
+    edges = data["data"]["findPodcasts"]["edges"]
 
-    podcasts = data["data"]["findPodcasts"]
-
-    assert len(podcasts) == 1
-    assert podcasts[0]["title"] == "Podcast B"
+    assert len(edges) == 1
+    assert edges[0]["node"]["title"] == "Podcast B"
