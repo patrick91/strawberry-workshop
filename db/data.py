@@ -1,6 +1,6 @@
 from asgiref.sync import sync_to_async
 
-from db.pagination import paginate
+from db.pagination import PaginatedData, paginate
 from users.models import User
 
 from . import models
@@ -28,7 +28,7 @@ async def subscribe_to_podcast(user: User, podcast: models.Podcast) -> None:
 
 async def find_podcasts(
     query: str, first: int = 10, after: str | None = None
-) -> tuple[list[models.Podcast], list[str]]:
+) -> PaginatedData[models.Podcast]:
     def _find():
         podcasts = models.Podcast.objects.filter(title__icontains=query)
 

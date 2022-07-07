@@ -23,7 +23,7 @@ class PodcastsQuery:
     ) -> list[Podcast]:
         # TODO: enforce max first
 
-        podcasts, cursors = await data.find_podcasts(
+        paginated_cursors = await data.find_podcasts(
             query=query,
             first=first,
             after=str(after) if after is not strawberry.UNSET else None,
@@ -32,9 +32,9 @@ class PodcastsQuery:
         # temporary hack
         results = []
 
-        for db_podcast, cursor in zip(podcasts, cursors):
-            podcast = Podcast.from_db(db_podcast)
-            podcast.id = cursor
+        for edge in paginated_cursors.edges:
+            podcast = Podcast.from_db(edge.node)
+            podcast.id = edge.cursor
             results.append(podcast)
 
         return results
