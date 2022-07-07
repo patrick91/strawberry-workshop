@@ -21,6 +21,10 @@ class Podcast(models.Model):
     # list of links with name and url (spotify, apple music, etc)
     links = models.JSONField(blank=True, default=list)
 
+    subscribers = models.ManyToManyField(
+        "users.User", related_name="subscribed_podcasts", blank=True
+    )
+
     def __str__(self):
         return self.title
 

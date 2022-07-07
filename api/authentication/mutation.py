@@ -13,7 +13,7 @@ class LoginPayload:
 class AuthenticationMutation:
     @strawberry.mutation
     async def login(self, info: Info, email: str, password: str) -> LoginPayload:
-        request = info.context.request
+        request = info.context["request"]
 
         user = await authenticate_and_login(request, email=email, password=password)
 
