@@ -40,3 +40,10 @@ async def find_podcasts(
         )
 
     return await sync_to_async(_find)()
+
+
+async def find_latest_episodes(last: int = 5) -> list[models.Episode]:
+    def _find():
+        return models.Episode.objects.order_by("-published_at").all()[:last]
+
+    return await sync_to_async(list)(_find())

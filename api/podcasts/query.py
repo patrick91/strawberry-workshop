@@ -3,7 +3,7 @@ import strawberry
 from api.pagination.types import Connection, Edge, PageInfo
 from db import data
 
-from .types import Podcast
+from .types import Episode, Podcast
 
 
 @strawberry.type
@@ -44,3 +44,9 @@ class PodcastsQuery:
                 for edge in paginated_cursors.edges
             ],
         )
+
+    @strawberry.field
+    async def latest_episodes(self, last: int = 5) -> list[Episode]:
+        episodes = await data.find_latest_episodes(last=last)
+
+        return [Episode.from_db(episode) for episode in episodes]
