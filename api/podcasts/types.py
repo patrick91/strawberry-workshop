@@ -3,7 +3,7 @@ from uuid import UUID
 
 import strawberry
 
-from db import data, models
+from db import models
 
 
 @strawberry.type
@@ -32,9 +32,9 @@ class Episode:
 
     @strawberry.field
     async def podcast(self) -> Podcast:
-        db_podcast = await data.find_podcast_by_id(str(self.podcast_id))
+        from .dataloaders import podcast_loader
 
-        return Podcast.from_db(db_podcast)
+        return await podcast_loader.load(str(self.podcast_id))
 
     @classmethod
     def from_db(cls, db_episode: models.Episode) -> "Episode":

@@ -10,6 +10,12 @@ class AlreadySubscribedToPodcastError(Exception):
     pass
 
 
+async def find_podcasts_by_ids(ids: list[str]) -> list[models.Podcast]:
+    podcasts = models.Podcast.objects.filter(id__in=ids).all()
+
+    return await sync_to_async(list)(podcasts)
+
+
 async def find_podcast_by_id(id: str) -> models.Podcast:
     podcast = models.Podcast.objects.filter(id=id)
 
