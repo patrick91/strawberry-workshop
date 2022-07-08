@@ -53,5 +53,6 @@ testpaths = ["tests/"]
 plugins = ["strawberry.ext.mypy_plugin"]
 
 [tool.poe.tasks]
-test   = "pytest"
+test = "pytest"
 import_data = "python cli.py https://talkpython.fm/episodes/rss"
+server = "python manage.py runserver"
