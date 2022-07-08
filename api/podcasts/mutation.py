@@ -2,6 +2,7 @@ import strawberry
 from strawberry.types import Info
 
 from api.authentication.permissions import IsAuthenticated
+from api.views import Context
 from db import data
 
 from .types import Podcast
@@ -37,7 +38,7 @@ SubscribeToPodcastResponse = strawberry.union(
 class PodcastsMutation:
     @strawberry.mutation(permission_classes=[IsAuthenticated])
     async def subscribe_to_podcast(
-        self, info: Info, id: strawberry.ID
+        self, info: Info[Context, None], id: strawberry.ID
     ) -> SubscribeToPodcastResponse:
         request = info.context["request"]
 
@@ -49,6 +50,8 @@ class PodcastsMutation:
         user = await request.get_user()
 
         try:
+            assert isinstance(user, data.User)
+
             await data.subscribe_to_podcast(user, db_podcast)
         except data.AlreadySubscribedToPodcastError:
             return AlreadySubscribedToPodcast()

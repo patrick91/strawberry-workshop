@@ -23,7 +23,6 @@ class PodcastsQuery:
         after: strawberry.ID | None = strawberry.UNSET,
     ) -> Connection[Podcast]:
         # TODO: enforce max first
-
         paginated_cursors = await data.find_podcasts(
             query=query,
             first=first,

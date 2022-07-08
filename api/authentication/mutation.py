@@ -1,6 +1,7 @@
 import strawberry
 from strawberry.types import Info
 
+from api.views import Context
 from users.authenticate import authenticate_and_login
 
 
@@ -12,7 +13,9 @@ class LoginPayload:
 @strawberry.type
 class AuthenticationMutation:
     @strawberry.mutation
-    async def login(self, info: Info, email: str, password: str) -> LoginPayload:
+    async def login(
+        self, info: Info[Context, None], email: str, password: str
+    ) -> LoginPayload:
         request = info.context["request"]
 
         user = await authenticate_and_login(request, email=email, password=password)
