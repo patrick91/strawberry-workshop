@@ -69,7 +69,7 @@ def import_feed(feed_url: str):
 
     rich.print(f"Parsed feed: {podcast['title']}")
 
-    podcast, _ = Podcast.objects.update_or_create(
+    db_podcast, _ = Podcast.objects.update_or_create(
         title=podcast["title"],
         defaults={
             "description": podcast.get("description", ""),
@@ -79,6 +79,7 @@ def import_feed(feed_url: str):
         },
     )
 
+    rich.print(f"Podcast id: {db_podcast.id}")
     rich.print(f"Found {len(episodes)} episodes")
 
     for episode in track(episodes, "Importing episodes"):
@@ -87,7 +88,7 @@ def import_feed(feed_url: str):
         ).isoformat()
 
         episode, _ = Episode.objects.update_or_create(
-            podcast=podcast,
+            podcast=db_podcast,
             title=episode["title"],
             defaults={
                 "notes": episode.get("description", ""),

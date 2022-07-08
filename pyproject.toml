@@ -54,5 +54,14 @@ plugins = ["strawberry.ext.mypy_plugin"]
 
 [tool.poe.tasks]
 test = "pytest"
-import_data = "python cli.py https://talkpython.fm/episodes/rss"
 server = "python manage.py runserver"
+
+
+[tool.poe.tasks.import-data]
+shell = """
+python cli.py https://talkpython.fm/episodes/rss
+python cli.py https://realpython.com/podcasts/rpp/feed
+python cli.py https://pythonbytes.fm/episodes/rss
+python cli.py https://www.pythonpodcast.com/feed/mp3/
+"""
+interpreter = "bash"
