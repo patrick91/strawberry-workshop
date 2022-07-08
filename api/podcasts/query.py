@@ -30,12 +30,7 @@ class PodcastsQuery:
             after=str(after) if after is not strawberry.UNSET else None,
         )
 
-        page_info = PageInfo(
-            has_next_page=False,
-            has_previous_page=False,
-            start_cursor=None,
-            end_cursor=None,
-        )
+        page_info = PageInfo.from_db(paginated_cursors.page_info)
 
         return Connection(
             page_info=page_info,
