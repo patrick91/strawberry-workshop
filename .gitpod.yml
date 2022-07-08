@@ -1,0 +1,19 @@
+tasks:
+  - before: "echo 'export PIP_USER=no' >> ~/.bashrc && export PIP_USER=no"
+  - init: |
+      pip install poetry
+      poetry config virtualenvs.create true
+      poetry config virtualenvs.in-project true
+      poetry env use python
+      poetry install
+    command: |
+      poetry run python manage.py runserver
+
+ports:
+  - port: 8000
+    visibility: private
+    onOpen: open-preview
+
+vscode:
+  extensions:
+    - ms-python.python

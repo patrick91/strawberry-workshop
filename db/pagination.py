@@ -19,13 +19,14 @@ class Edge(Generic[T]):
 @dataclass
 class PaginatedData(Generic[T]):
     edges: list[Edge[T]]
+    # TODO: add page_info
 
 
 def paginate(
     queryset: QuerySet[T],
     ordering: Iterable[str],
     first: int = 10,
-    after=None,
+    after: str | None = None,
 ) -> PaginatedData[T]:
     paginator = CursorPaginator(queryset, ordering=ordering)
     page = paginator.page(first=first, after=after)

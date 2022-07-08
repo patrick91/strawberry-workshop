@@ -468,7 +468,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "strawberry-graphql"
-version = "0.116.3"
+version = "0.117.1"
 description = "A library for creating GraphQL APIs"
 category = "main"
 optional = false
@@ -558,7 +558,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "ee3260ba07abc757c30208f9d071287546e0736e94c5cece706795078e5c23c5"
+content-hash = "2e4f63c9c291bf5e6e52f6edebf12d398e59d648a7e4f814d3350a838789f7a0"
 
 [metadata.files]
 asgiref = [
@@ -892,10 +892,7 @@ sqlparse = [
     {file = "sqlparse-0.4.2-py3-none-any.whl", hash = "sha256:48719e356bb8b42991bdbb1e8b83223757b93789c00910a616a071910ca4a64d"},
     {file = "sqlparse-0.4.2.tar.gz", hash = "sha256:0c00730c74263a94e5a9919ade150dfc3b19c574389985446148402998287dae"},
 ]
-strawberry-graphql = [
-    {file = "strawberry-graphql-0.116.3.tar.gz", hash = "sha256:211c7d6a16b0d11be9eabf6c51dbd3ce2958f93628c76f0d1776ed236ecdb0ee"},
-    {file = "strawberry_graphql-0.116.3-py3-none-any.whl", hash = "sha256:ee6cf741d367c8c299ded6ecdd3bbea354284b2246e4dda09f4b959c5597de21"},
-]
+strawberry-graphql = []
 tenacity = [
     {file = "tenacity-8.0.1-py3-none-any.whl", hash = "sha256:f78f4ea81b0fabc06728c11dc2a8c01277bfc5181b321a4770471902e3eb844a"},
     {file = "tenacity-8.0.1.tar.gz", hash = "sha256:43242a20e3e73291a28bcbcacfd6e000b02d3857a9a9fff56b297a27afdc932f"},

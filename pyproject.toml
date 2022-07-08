@@ -7,7 +7,6 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-strawberry-graphql = "^0.116.3"
 Django = "^4.0.6"
 typer = "^0.4.2"
 podcastparser = "^0.6.8"
@@ -17,6 +16,7 @@ pytest = "^7.1.2"
 pytest-django = "^4.5.2"
 django-cursor-pagination = "^0.2.0"
 ddtrace = "^1.2.2"
+strawberry-graphql = "^0.117.1"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.961"
