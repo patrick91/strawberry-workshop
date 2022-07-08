@@ -1,6 +1,9 @@
 tasks:
   - before: "echo 'export PIP_USER=no' >> ~/.bashrc && export PIP_USER=no"
   - init: |
+      pyenv install 3.10.2
+      pyenv global 3.10.2
+
       pip install poetry
       poetry config virtualenvs.create true
       poetry config virtualenvs.in-project true
