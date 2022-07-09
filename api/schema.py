@@ -12,7 +12,7 @@ class Query(PodcastsQuery):
 
 @strawberry.type
 class Mutation(AuthenticationMutation, PodcastsMutation):
-    ...
+    hello: str
 
 
 schema = strawberry.Schema(
