@@ -53,3 +53,19 @@ async def find_latest_episodes(last: int = 5) -> list[models.Episode]:
         return models.Episode.objects.order_by("-published_at").all()[:last]
 
     return await sync_to_async(list)(_find())
+
+
+async def get_episodes_for_podcast(
+    podcast_id: str, first: int = 10, after: str | None = None
+) -> PaginatedData[models.Episode]:
+    def _find():
+        episodes = models.Episode.objects.filter(podcast_id=podcast_id)
+
+        return paginate(
+            episodes,
+            ordering=("title", "-id"),
+            first=first,
+            after=after,
+        )
+
+    return await sync_to_async(_find)()

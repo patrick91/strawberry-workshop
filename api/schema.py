@@ -1,5 +1,5 @@
 import strawberry
-from strawberry.extensions import ValidationCache
+from strawberry.extensions import QueryDepthLimiter, ValidationCache
 
 from .authentication.mutation import AuthenticationMutation
 from .podcasts.mutation import PodcastsMutation
@@ -20,5 +20,9 @@ class Mutation(AuthenticationMutation, PodcastsMutation):
 schema = strawberry.Schema(
     query=Query,
     mutation=Mutation,
-    extensions=[DatadogTracingExtension, ValidationCache()],
+    extensions=[
+        DatadogTracingExtension,
+        ValidationCache(),
+        QueryDepthLimiter(8),
+    ],
 )
