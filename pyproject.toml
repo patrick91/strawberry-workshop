@@ -58,7 +58,7 @@ plugins = ["strawberry.ext.mypy_plugin"]
 test = "pytest"
 server = "python manage.py runserver"
 server-debug = "poetry run ddtrace-run python manage.py runserver_plus --print-sql"
-
+migrate = "python manage.py migrate"
 
 [tool.poe.tasks.import-data]
 shell = """

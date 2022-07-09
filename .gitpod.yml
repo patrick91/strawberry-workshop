@@ -10,7 +10,9 @@ tasks:
       poetry env use python
       poetry install
     command: |
-      poetry run python manage.py runserver
+      poetry run poe import-data
+      poetry run poe migrate
+      poetry run poe server
 
 ports:
   - port: 8000
