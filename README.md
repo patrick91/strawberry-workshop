@@ -20,8 +20,8 @@ run the following command to get the project up and running:
 
 ```bash
 poetry install
-poetry run poe import-data
 poetry run poe migrate
+poetry run poe import-data
 poetry run poe server
 ```
 
