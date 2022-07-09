@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "db",
     "users",
     "ddtrace.contrib.django",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
