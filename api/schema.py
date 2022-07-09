@@ -7,7 +7,7 @@ from .podcasts.query import PodcastsQuery
 
 @strawberry.type
 class Query(PodcastsQuery):
-    ...
+    hello: str
 
 
 @strawberry.type

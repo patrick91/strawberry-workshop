@@ -50,7 +50,6 @@ sections = ["FUTURE", "STDLIB", "PYTEST", "THIRDPARTY", "DJANGO", "STRAWBERRY", 
 addopts = "-s"
 DJANGO_SETTINGS_MODULE = "podcast.settings"
 testpaths = ["tests/"]
-# asyncio_mode = "auto"
 
 [tool.mypy]
 plugins = ["strawberry.ext.mypy_plugin"]
@@ -58,6 +57,7 @@ plugins = ["strawberry.ext.mypy_plugin"]
 [tool.poe.tasks]
 test = "pytest"
 server = "python manage.py runserver"
+server-debug = "poetry run ddtrace-run python manage.py runserver_plus --print-sql"
 
 
 [tool.poe.tasks.import-data]
