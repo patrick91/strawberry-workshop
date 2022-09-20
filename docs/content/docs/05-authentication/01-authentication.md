@@ -1,9 +1,10 @@
 +++
 title = "Authentication"
 draft = false
-weight = 10
+weight = 51
 sort_by = "weight"
 template = "docs/page.html"
+slug = "authentication"
 
 [extra]
 toc = true

@@ -1,9 +1,10 @@
 +++
 title = "Permissions"
 draft = false
-weight = 20
+weight = 52
 sort_by = "weight"
 template = "docs/page.html"
+slug = "permissions"
 
 [extra]
 toc = true

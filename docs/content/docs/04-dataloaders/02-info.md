@@ -1,9 +1,10 @@
 +++
 title = "Introspecting operations"
 draft = false
-weight = 20
+weight = 42
 sort_by = "weight"
 template = "docs/page.html"
+slug = "info"
 
 [extra]
 toc = true

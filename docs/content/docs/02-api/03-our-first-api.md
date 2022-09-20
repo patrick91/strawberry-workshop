@@ -1,9 +1,10 @@
 +++
 title = "Our first API"
 draft = false
-weight = 30
+weight = 23
 sort_by = "weight"
 template = "docs/page.html"
+slug = "our-first-api"
 
 [extra]
 toc = true

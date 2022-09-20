@@ -1,9 +1,10 @@
 +++
 title = "Dataloaders"
 draft = false
-weight = 30
+weight = 43
 sort_by = "weight"
 template = "docs/page.html"
+slug = "dataloaders"
 
 [extra]
 toc = true

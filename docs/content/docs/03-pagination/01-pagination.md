@@ -1,9 +1,10 @@
 +++
 title = "Pagination"
 draft = false
-weight = 10
+weight = 31
 sort_by = "weight"
 template = "docs/page.html"
+slug = "pagination"
 
 [extra]
 toc = true

@@ -1,9 +1,10 @@
 +++
 title = "Handling errors"
 draft = false
-weight = 10
+weight = 61
 sort_by = "weight"
 template = "docs/page.html"
+slug = "errors"
 
 [extra]
 toc = true

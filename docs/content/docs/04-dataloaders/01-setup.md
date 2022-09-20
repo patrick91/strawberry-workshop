@@ -1,9 +1,10 @@
 +++
 title = "Setup"
 draft = false
-weight = 10
+weight = 41
 sort_by = "weight"
 template = "docs/page.html"
+slug = "setup"
 
 [extra]
 toc = true

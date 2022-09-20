@@ -31,7 +31,7 @@ info = 'Built by <a href="https://twitter.com/patrick91">Patrick Arminio</a>'
 [[extra.menu.main]]
 name = "Docs"
 section = "docs"
-url = "/docs/getting-started/introduction/"
+url = "/docs/01-getting-started/introduction/"
 weight = 10
 
 [[extra.menu.social]]

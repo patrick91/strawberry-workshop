@@ -1,9 +1,10 @@
 +++
 title = "Strawberry Overview"
 draft = false
-weight = 10
+weight = 22
 sort_by = "weight"
 template = "docs/page.html"
+slug = "strawberry-overview"
 
 [extra]
 toc = true

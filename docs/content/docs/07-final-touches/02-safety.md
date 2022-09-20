@@ -1,9 +1,10 @@
 +++
 title = "Safety"
 draft = false
-weight = 20
+weight = 71
 sort_by = "weight"
 template = "docs/page.html"
+slug = "safety"
 
 [extra]
 toc = true

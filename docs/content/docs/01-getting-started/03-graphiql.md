@@ -1,9 +1,10 @@
 +++
 title = "GraphiQL"
 draft = false
-weight = 30
+weight = 12
 sort_by = "weight"
 template = "docs/page.html"
+setup = "graphiql"
 
 [extra]
 toc = true

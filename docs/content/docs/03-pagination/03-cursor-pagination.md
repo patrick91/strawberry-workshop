@@ -1,9 +1,10 @@
 +++
 title = "Cursor pagination"
 draft = false
-weight = 30
+weight = 33
 sort_by = "weight"
 template = "docs/page.html"
+slug = "cursor-pagination"
 
 [extra]
 toc = true

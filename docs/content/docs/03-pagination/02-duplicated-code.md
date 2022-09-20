@@ -1,9 +1,10 @@
 +++
 title = "Duplicated code"
 draft = false
-weight = 20
+weight = 32
 sort_by = "weight"
 template = "docs/page.html"
+slug = "duplicated-code"
 
 [extra]
 toc = true

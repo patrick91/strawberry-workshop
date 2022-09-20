@@ -1,9 +1,10 @@
 +++
 title = "How GraphQL works"
 draft = false
-weight = 20
+weight = 21
 sort_by = "weight"
 template = "docs/page.html"
+slug = "how-it-works"
 
 [extra]
 toc = true

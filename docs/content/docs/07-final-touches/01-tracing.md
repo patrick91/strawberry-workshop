@@ -1,9 +1,10 @@
 +++
 title = "Tracing"
 draft = false
-weight = 10
+weight = 71
 sort_by = "weight"
 template = "docs/page.html"
+slug = "tracing"
 
 [extra]
 toc = true
