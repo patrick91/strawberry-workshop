@@ -11,8 +11,17 @@ toc = true
 top = false
 +++
 
+Strawberry comes with a built-in GraphiQL interface that you can use to test
+your API.
+
+To access it, we need to start the server, by running:
+
+```bash
+python manage.py runserver
+```
+
 Once you have started the server, you can open GraphiQL at
-http://localhost:8000/graphql.
+[http://localhost:8000/graphql](http://localhost:8000/graphql).
 
 GraphiQL is a graphical interactive in-browser GraphQL IDE. It is a powerful
 tool that allows you to explore your API and test queries.
