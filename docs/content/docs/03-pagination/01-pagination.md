@@ -149,6 +149,8 @@ We can now update our resolver to return a `PaginatedPodcasts` object:
 
 ```python
 import strawberry
+
+
 @strawberry.type
 class PodcastsQuery:
     # keep the previous fields
