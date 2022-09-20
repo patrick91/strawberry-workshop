@@ -27,14 +27,17 @@ anything really).
 In GraphQL, instead of using URLs, you send a document, specifying the data you
 want to fetch.
 
-This is (usually) done by sending a JSON payload to the endpoint, for example
-the payload for the query we've been testing so far, will look like this:
+This is (usually) done by sending a JSON payload using a POST request to the
+endpoint, for example the payload for the query we've been testing so far, will
+look like this:
 
 ```json
 {
   "query": "{ hello }"
 }
 ```
+
+> Note: queries can also be done via GET parameters, when enabled.
 
 ## The execution of a GraphQL request
 

@@ -42,7 +42,7 @@ this decorator is what transform your python class to a GraphQL type.
 
 `@strawberry.type` does a few things, the most important ones are the following:
 
-1. it uses dataclasses.dataclass to make your class a dataclass
+1. it uses `dataclasses.dataclass` to make your class a dataclass
 2. it finds all the fields on the class and creates a GraphQL type from it
 
 Using `dataclasses.dataclass` makes your class easier to use, since you'll be

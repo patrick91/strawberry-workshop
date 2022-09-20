@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Generic, Iterable, TypeVar
+from typing import Generic, Iterable, Optional, TypeVar
 
 from cursor_pagination import CursorPaginator
 
@@ -20,8 +20,8 @@ class Edge(Generic[T]):
 class PageInfo:
     has_next_page: bool
     has_previous_page: bool
-    start_cursor: str | None
-    end_cursor: str | None
+    start_cursor: Optional[str]
+    end_cursor: Optional[str]
 
 
 @dataclass
@@ -34,7 +34,7 @@ def paginate(
     queryset: QuerySet[T],
     ordering: Iterable[str],
     first: int = 10,
-    after: str | None = None,
+    after: Optional[str] = None,
 ) -> PaginatedData[T]:
     paginator = CursorPaginator(queryset, ordering=ordering)
     page = paginator.page(first=first, after=after)

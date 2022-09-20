@@ -128,6 +128,8 @@ We are now ready to return a real podcast from our API. Let's go in our
 import strawberry
 
 
+from typing import Optional
+
 from db import data
 
 from .types import Episode, Podcast
@@ -136,7 +138,7 @@ from .types import Episode, Podcast
 @strawberry.type
 class PodcastsQuery:
     @strawberry.field
-    async def podcast(self, id: strawberry.ID) -> Podcast | None:
+    async def podcast(self, id: strawberry.ID) -> Optional[Podcast]:
         db_podcast = await data.find_podcast_by_id(id):
 
         if db_podcast:

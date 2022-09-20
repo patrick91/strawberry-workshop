@@ -1,6 +1,6 @@
 import urllib.request
 from datetime import datetime
-from typing import List, cast
+from typing import List, Optional, cast
 
 import podcastparser
 import rich
@@ -27,12 +27,12 @@ class ParsedEpisode(TypedDict):
     published: int
     link: str
     total_time: int
-    payment_url: str | None
+    payment_url: Optional[str]
     enclosures: List[Enclosure]
     title: str
     guid: str
     itunes_author: str
-    number: int | None
+    number: Optional[int]
     explicit: bool
     subtitle: str
     description_html: str
