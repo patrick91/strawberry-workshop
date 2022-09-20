@@ -221,7 +221,7 @@ a response like this:
 
 and we can use the `__typename` field to show the following message to the user:
 
-```text
+```
 Sorry, the podcast you are trying to subscribe to doesn't exist
 ```
 
