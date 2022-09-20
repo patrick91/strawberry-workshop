@@ -10,4 +10,8 @@ repo_version = "GitHub"
 repo_license = "Open-source MIT License."
 repo_url = "https://github.com/patrick91/strawberry-workshop"
 
+[[extra.list]]
+title = ""
+content = ''
+
 +++
