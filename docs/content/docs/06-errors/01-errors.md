@@ -64,7 +64,7 @@ class PodcastsMutation:
     @strawberry.mutation(permission_classes=[IsAuthenticated])
     async def subscribe_to_podcast(
         self, info: Info[Context, None], id: strawberry.ID
-    ) -> SubscribeToPodcastResponse:
+    ) -> bool:
         request = info.context["request"]
 
         db_podcast = await data.find_podcast_by_id(id)
@@ -121,17 +121,23 @@ We can use a union type to represent these cases, we'll need to create one type
 for each case, and then we can use a union type to represent all of them:
 
 ```python
+from .types import Podcast
+
+
 @strawberry.type
 class PodcastDoesNotExistError:
     message: str = "Podcast does not exist"
+
 
 @strawberry.type
 class AlreadySubscribedToPodcastError:
     message: str = "Already subscribed to podcast"
 
+
 @strawberry.type
 class SubscribeToPodcastSuccess:
-    message: str = "Subscribed to podcast"
+    podcast: Podcast
+
 
 SubscribeToPodcastResponse = strawberry.union(
     "SubscribeToPodcastResponse",
@@ -154,14 +160,14 @@ class PodcastsMutation:
         db_podcast = await data.find_podcast_by_id(id)
 
         if not db_podcast:
-            return PodcastNotFound()
+            return PodcastDoesNotExistError()
 
         user = await request.get_user()
 
         try:
             await data.subscribe_to_podcast(user, db_podcast)
         except data.AlreadySubscribedToPodcastError:
-            return AlreadySubscribedToPodcast()
+            return AlreadySubscribedToPodcastError()
 
         return SubscribeToPodcastSuccess(
             podcast=Podcast.from_db(db_podcast),
@@ -259,12 +265,12 @@ class Error:
 
 
 @strawberry.type
-class PodcastNotFound(Error):
+class PodcastDoesNotExistError(Error):
     message: str = "Podcast not found"
 
 
 @strawberry.type
-class AlreadySubscribedToPodcast(Error):
+class AlreadySubscribedToPodcastError(Error):
     message: str = "You are already subscribed to this podcast"
 ```
 

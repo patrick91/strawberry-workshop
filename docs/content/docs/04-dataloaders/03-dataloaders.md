@@ -124,4 +124,4 @@ and the the dataloader will schedule a task to execute all the operations in the
 queue in the next event loop.
 
 If you want to learn more about dataloaders, you can read the following article:
-https://xuorig.medium.com/the-graphql-dataloader-pattern-visualized-3064a00f319f
+[https://xuorig.medium.com/the-graphql-dataloader-pattern-visualized-3064a00f319f](https://xuorig.medium.com/the-graphql-dataloader-pattern-visualized-3064a00f319f)

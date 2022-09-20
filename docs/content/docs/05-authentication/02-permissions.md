@@ -35,7 +35,7 @@ class PodcastsMutation:
     @strawberry.mutation(permission_classes=[IsAuthenticated])
     async def subscribe_to_podcast(
         self, info: Info[Context, None], id: strawberry.ID
-    ) -> SubscribeToPodcastResponse:
+    ) -> bool:
         request = info.context["request"]
 
         db_podcast = await data.find_podcast_by_id(id)

@@ -12,10 +12,10 @@ SUBSCRIBE_TO_PODCAST_MUTATION = """
                     title
                 }
             }
-            ... on PodcastNotFound {
+            ... on PodcastDoesNotExistError {
                 message
             }
-            ... on AlreadySubscribedToPodcast {
+            ... on AlreadySubscribedToPodcastError {
                 message
             }
         }

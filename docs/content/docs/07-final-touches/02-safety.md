@@ -74,6 +74,11 @@ To prevent this, we can limit the depth of the query by using the
 `QueryDepthLimiter` extension provided by Strawberry:
 
 ```python
+from strawberry.extensions.query_depth_limiter import QueryDepthLimiter
+
+...
+
+
 schema = strawberry.Schema(
     query=Query,
     mutation=Mutation,
