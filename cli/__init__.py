@@ -1,6 +1,6 @@
 import urllib.request
 from datetime import datetime
-from typing import cast
+from typing import List, cast
 
 import podcastparser
 import rich
@@ -28,7 +28,7 @@ class ParsedEpisode(TypedDict):
     link: str
     total_time: int
     payment_url: str | None
-    enclosures: list[Enclosure]
+    enclosures: List[Enclosure]
     title: str
     guid: str
     itunes_author: str
@@ -45,7 +45,7 @@ class ItunesOwner(TypedDict):
 
 class ParsedPodcast(TypedDict, total=False):
     title: Required[str]
-    episodes: list[ParsedEpisode]
+    episodes: List[ParsedEpisode]
     description: str
     link: str
     language: str
@@ -56,11 +56,8 @@ class ParsedPodcast(TypedDict, total=False):
     type: str
 
 
-@app.command()
-def import_feed(feed_url: str):
+def _import_feed(feed_url: str) -> None:
     current_timezone = timezone.get_current_timezone()
-
-    rich.print(f"Fetching feed from {feed_url}")
 
     podcast = cast(
         ParsedPodcast, podcastparser.parse(feed_url, urllib.request.urlopen(feed_url))
@@ -96,3 +93,26 @@ def import_feed(feed_url: str):
                 "total_time": episode.get("total_time", 0),
             },
         )
+
+
+@app.command()
+def import_feeds(feed_urls: List[str]):
+    # TODO: this can be async
+
+    for feed_url in feed_urls:
+        rich.print(f"Fetching feed from {feed_url}")
+
+        _import_feed(feed_url)
+
+
+@app.command()
+def get_podcasts_ids():
+    podcasts = Podcast.objects.all()[:5]
+
+    for podcast in podcasts:
+        rich.print(f"{podcast.id}: {podcast.title}")
+
+
+@app.command()
+def main(name: str):
+    print(f"Hello {name}")

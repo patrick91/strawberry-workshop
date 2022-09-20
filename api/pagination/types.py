@@ -1,4 +1,4 @@
-from typing import Generic, TypeVar
+from typing import Generic, Optional, TypeVar
 
 import strawberry
 
@@ -12,8 +12,8 @@ Node = TypeVar("Node")
 class PageInfo:
     has_next_page: bool
     has_previous_page: bool
-    start_cursor: str | None
-    end_cursor: str | None
+    start_cursor: Optional[str]
+    end_cursor: Optional[str]
 
     @classmethod
     def from_db(cls, db_page_info: DBPageInfo) -> "PageInfo":
