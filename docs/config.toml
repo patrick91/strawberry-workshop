@@ -1,5 +1,5 @@
 # The URL the site will be built for
-base_url = "https://example.com"
+base_url = "https://patrick91.github.io/strawberry-workshop"
 description = "Build a production ready GraphQL API using Strawberry GraphQL"
 title = "Production GraphQL workshop"
 
