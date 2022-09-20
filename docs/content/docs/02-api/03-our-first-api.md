@@ -125,21 +125,20 @@ We are now ready to return a real podcast from our API. Let's go in our
 `api/podcast/query.py` file and update the `podcast` resolver:
 
 ```python
-import strawberry
-
-
 from typing import Optional
+
+import strawberry
 
 from db import data
 
-from .types import Episode, Podcast
+from .types import Podcast
 
 
 @strawberry.type
 class PodcastsQuery:
     @strawberry.field
     async def podcast(self, id: strawberry.ID) -> Optional[Podcast]:
-        db_podcast = await data.find_podcast_by_id(id):
+        db_podcast = await data.find_podcast_by_id(id)
 
         if db_podcast:
             return Podcast(

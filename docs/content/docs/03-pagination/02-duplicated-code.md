@@ -29,7 +29,7 @@ I usually move this code on a class method of the type, like this:
 ```python
 import strawberry
 
-from db import data, models
+from db import models
 
 
 @strawberry.type
@@ -65,4 +65,4 @@ class PodcastsQuery:
 And we'll avoid having to change the code in multiple places if we need to
 change the type.
 
-All our type in future will have this method.
+To make our code easier to use, all our types in future will have this method.

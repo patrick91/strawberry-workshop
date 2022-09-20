@@ -194,6 +194,6 @@ query {
 ```
 
 This pagination works well for small datasets, but might not work super well for
-large datasets. Another approach could be to use a cursor based pagination.
-We'll also see a specification called Relay that allows us to create a cursor
-based pagination and it is quite popular in the GraphQL ecosystem.
+large one. Another approach could be to use a cursor based pagination. We'll
+also see a specification called Relay that allows us to create a cursor based
+pagination and it is quite popular in the GraphQL ecosystem.

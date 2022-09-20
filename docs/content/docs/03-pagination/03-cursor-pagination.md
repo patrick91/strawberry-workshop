@@ -174,4 +174,4 @@ for all types that use the TypeVar, so we'll also have a `PodcastEdge` type
 defined for us.
 
 If you want to learn more about pagination feel free to read this article:
-https://www.apollographql.com/blog/graphql/pagination/understanding-pagination-rest-graphql-and-relay/
+[https://www.apollographql.com/blog/graphql/pagination/understanding-pagination-rest-graphql-and-relay/](https://www.apollographql.com/blog/graphql/pagination/understanding-pagination-rest-graphql-and-relay/)
