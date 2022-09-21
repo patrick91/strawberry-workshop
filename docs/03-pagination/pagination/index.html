@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://patrick91.github.io/strawberry-workshop/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://patrick91.github.io/strawberry-workshop/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://patrick91.github.io/strawberry-workshop/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Pagination | Production GraphQL workshop</title>
+<meta name="description" content="Build a production ready GraphQL API using Strawberry GraphQL">
+<link rel="canonical" href="https://patrick91.github.io/strawberry-workshop/docs/03-pagination/pagination/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://patrick91.github.io/strawberry-workshop/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Docs",
+            "item": "https://patrick91.github.io/strawberry-workshop/docs/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "03 Pagination",
+            "item": "https://patrick91.github.io/strawberry-workshop/docs/03-pagination/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "Pagination",
+            "item": "https://patrick91.github.io/strawberry-workshop/docs/03-pagination/pagination/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#fff">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://patrick91.github.io/strawberry-workshop/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://patrick91.github.io/strawberry-workshop/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://patrick91.github.io/strawberry-workshop/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://patrick91.github.io/strawberry-workshop/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://patrick91.github.io/strawberry-workshop">Production GraphQL workshop</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+				
+					<li class="nav-item">
+						<a class="nav-link" href="https://twitter.com/patrick91"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg><span class="ms-2 visually-hidden">Twitter</span></a>
+					</li>
+				
+					<li class="nav-item">
+						<a class="nav-link" href="https://github.com/patrick91/strawberry-workshop"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg><span class="ms-2 visually-hidden">GitHub</span></a>
+					</li>
+				
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item docs active">
+							<a class="nav-link" href="https://patrick91.github.io/strawberry-workshop/docs/01-getting-started/introduction/">Docs</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+	<nav class="docs-links" aria-label="Main navigation">
+			
+			
+			
+			
+					
+					
+					
+							<h3>Getting started</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/01-getting-started/introduction/">Introduction</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/01-getting-started/setup/">Setup</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/01-getting-started/03-graphiql/">GraphiQL</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Writing the API</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/02-api/how-it-works/">How GraphQL works</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/02-api/strawberry-overview/">Strawberry Overview</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/02-api/our-first-api/">Our first API</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Pagination</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link active" href="https://patrick91.github.io/strawberry-workshop/docs/03-pagination/pagination/">Pagination</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/03-pagination/duplicated-code/">Duplicated code</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/03-pagination/cursor-pagination/">Cursor pagination</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Data fetching optimization</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/04-dataloaders/setup/">Setup</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/04-dataloaders/info/">Introspecting operations</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/04-dataloaders/dataloaders/">Dataloaders</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Authentication</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/05-authentication/authentication/">Authentication</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/05-authentication/permissions/">Permissions</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Errors</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/06-errors/errors/">Handling errors</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Final touches</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/07-final-touches/safety/">Safety</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/07-final-touches/tracing/">Tracing</a></li>
+							
+					</ul>
+					
+					
+			
+	</nav>
+</div>
+
+	  
+  
+  <nav class="docs-toc d-none d-xl-block col-xl-3" aria-label="Secondary navigation">
+  	<div class="page-links">
+  			<h3>On this page</h3>
+  			<nav id="TableOfContents">
+  					<ul>
+  							
+  							<li><a href="https://patrick91.github.io/strawberry-workshop/docs/03-pagination/pagination/#basic-pagination">Basic pagination</a></li>
+  							
+  							
+  							<li><a href="https://patrick91.github.io/strawberry-workshop/docs/03-pagination/pagination/#some-basic-validation">Some basic validation</a></li>
+  							
+  							
+  							<li><a href="https://patrick91.github.io/strawberry-workshop/docs/03-pagination/pagination/#returning-has-next-page">Returning has next page</a></li>
+  							
+  							
+  					</ul>
+  			</nav>
+  	</div>
+  </nav>
+  
+
+      <main class="docs-content col-lg-11 col-xl-9">
+        <h1>Pagination</h1>
+        
+        <p>Almost every API needs to paginate data to avoid returning too much data at
+once. This is especially true with GraphQL as you can ask for as much data as
+you want in a single query.</p>
+<p>Let's see how we can create an API that paginates data. We'll be creating a new
+field that returns all the podcasts and paginates them.</p>
+<h2 id="basic-pagination">Basic pagination</h2>
+<p>Let's see how we can implement a basic pagination for our API. We'll allow our
+users to paginate the podcasts by passing a <code>page</code> and <code>perPage</code> argument to our
+field.</p>
+<p>The query will look like this:</p>
+<pre data-lang="graphql" style="background-color:#2b303b;color:#c0c5ce;" class="language-graphql "><code class="language-graphql" data-lang="graphql"><span style="color:#b48ead;">query </span><span>{
+</span><span>  podcasts(</span><span style="color:#bf616a;">page</span><span>: </span><span style="color:#d08770;">1</span><span>, </span><span style="color:#bf616a;">perPage</span><span>: </span><span style="color:#d08770;">10</span><span>) {
+</span><span>    title
+</span><span>  }
+</span><span>}
+</span></code></pre>
+<p>Our data module exposes a <code>paginate_podcast</code> function that we can use to
+paginate the podcasts. Let's create a new field on our Query that uses this
+function. Go to <code>podcasts/query.py</code> and update <code>PodcastsQuery</code> to look like
+this:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">import </span><span>strawberry
+</span><span>
+</span><span>
+</span><span style="color:#b48ead;">from </span><span>db </span><span style="color:#b48ead;">import </span><span>data
+</span><span style="color:#b48ead;">from </span><span>typing </span><span style="color:#b48ead;">import </span><span>Optional, List
+</span><span style="color:#b48ead;">from .</span><span>types </span><span style="color:#b48ead;">import </span><span>Podcast
+</span><span>
+</span><span>
+</span><span>@strawberry.</span><span style="color:#bf616a;">type
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">PodcastsQuery</span><span style="color:#eff1f5;">:
+</span><span>    </span><span style="color:#65737e;"># keep the previous fields
+</span><span>    </span><span style="color:#d08770;">...
+</span><span>
+</span><span>    @strawberry.</span><span style="color:#bf616a;">field
+</span><span>    </span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">podcasts</span><span>(</span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">page</span><span>: int = </span><span style="color:#d08770;">1</span><span>, </span><span style="color:#bf616a;">per_page</span><span>: int = </span><span style="color:#d08770;">10</span><span>) -&gt; List[Podcast]:
+</span><span>        db_podcasts = </span><span style="color:#b48ead;">await </span><span>data.</span><span style="color:#bf616a;">paginate_podcast</span><span>(</span><span style="color:#bf616a;">page</span><span>=page, </span><span style="color:#bf616a;">per_page</span><span>=per_page)
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">return </span><span>[
+</span><span>            </span><span style="color:#bf616a;">Podcast</span><span>(
+</span><span>                </span><span style="color:#bf616a;">id</span><span>=db_podcast.id,
+</span><span>                </span><span style="color:#bf616a;">title</span><span>=db_podcast.title,
+</span><span>                </span><span style="color:#bf616a;">description</span><span>=db_podcast.description,
+</span><span>            )
+</span><span>            </span><span style="color:#b48ead;">for </span><span>db_podcast </span><span style="color:#b48ead;">in </span><span>db_podcasts
+</span><span>        ]
+</span></code></pre>
+<p>Similar to the previous example, we have created a resolver that uses the data
+module to fetch the podcasts from the db and returns a list of <code>Podcast</code>
+objects. One thing to note is that we are using default arguments for <code>page</code> and
+<code>per_page</code>, this means that if the user doesn't pass these arguments, we'll be
+using the default values. These defaults are also exposed in GraphQL.</p>
+<p>Feel free to go to <a href="http://localhost:8000/graphql">GraphiQL</a> and try out!</p>
+<h2 id="some-basic-validation">Some basic validation</h2>
+<p>We can do some basic validation on the <code>page</code> and <code>per_page</code> arguments to make
+sure that the user is not passing invalid values. Let's update our resolver to
+look like this:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">import </span><span>strawberry
+</span><span>
+</span><span>
+</span><span style="color:#b48ead;">from </span><span>db </span><span style="color:#b48ead;">import </span><span>data
+</span><span style="color:#b48ead;">from </span><span>typing </span><span style="color:#b48ead;">import </span><span>Optional, List
+</span><span style="color:#b48ead;">from .</span><span>types </span><span style="color:#b48ead;">import </span><span>Podcast
+</span><span>
+</span><span>
+</span><span>@strawberry.</span><span style="color:#bf616a;">type
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">PodcastsQuery</span><span style="color:#eff1f5;">:
+</span><span>    </span><span style="color:#65737e;"># keep the previous fields
+</span><span>    </span><span style="color:#d08770;">...
+</span><span>
+</span><span>    @strawberry.</span><span style="color:#bf616a;">field
+</span><span>    </span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">podcasts</span><span>(</span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">page</span><span>: int = </span><span style="color:#d08770;">1</span><span>, </span><span style="color:#bf616a;">per_page</span><span>: int = </span><span style="color:#d08770;">10</span><span>) -&gt; List[Podcast]:
+</span><span>        </span><span style="color:#b48ead;">if </span><span>page &lt; </span><span style="color:#d08770;">1</span><span>:
+</span><span>            </span><span style="color:#b48ead;">raise </span><span style="color:#bf616a;">ValueError</span><span>(&quot;</span><span style="color:#a3be8c;">page must be greater than 0</span><span>&quot;)
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">if </span><span>per_page &lt; </span><span style="color:#d08770;">1</span><span>:
+</span><span>            </span><span style="color:#b48ead;">raise </span><span style="color:#bf616a;">ValueError</span><span>(&quot;</span><span style="color:#a3be8c;">per page must be greater than 0</span><span>&quot;)
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">if </span><span>per_page &gt; </span><span style="color:#d08770;">50</span><span>:
+</span><span>            </span><span style="color:#b48ead;">raise </span><span style="color:#bf616a;">ValueError</span><span>(&quot;</span><span style="color:#a3be8c;">per page must be less than 50</span><span>&quot;)
+</span><span>
+</span><span>        db_podcasts = </span><span style="color:#b48ead;">await </span><span>data.</span><span style="color:#bf616a;">paginate_podcast</span><span>(</span><span style="color:#bf616a;">page</span><span>=page, </span><span style="color:#bf616a;">per_page</span><span>=per_page)
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">return </span><span>[
+</span><span>            </span><span style="color:#bf616a;">Podcast</span><span>(
+</span><span>                </span><span style="color:#bf616a;">id</span><span>=db_podcast.id,
+</span><span>                </span><span style="color:#bf616a;">title</span><span>=db_podcast.title,
+</span><span>                </span><span style="color:#bf616a;">description</span><span>=db_podcast.description,
+</span><span>            )
+</span><span>            </span><span style="color:#b48ead;">for </span><span>db_podcast </span><span style="color:#b48ead;">in </span><span>db_podcasts
+</span><span>        ]
+</span></code></pre>
+<p>Now if the user passes a <code>page</code> or <code>per_page</code> that is less than 1 or greater
+than 50, we'll raise an error. Every exception that is raised in a resolver will
+be returned to the user as an error.</p>
+<blockquote>
+<p>Note, there are ways of changing how errors are returned to the user, as
+returning all the exceptions might be problematic in some cases.</p>
+</blockquote>
+<h2 id="returning-has-next-page">Returning has next page</h2>
+<p>We can also let our clients know if there's more pages in our paginated field.
+We can do this by returning a <code>has_next_page</code> field in our resolver. We can do
+this by creating a new type that contains the <code>has_next_page</code> field and the list
+of podcasts.</p>
+<p>Let's create a new type called <code>PaginatedPodcasts</code> that contains the list of
+podcasts and the total number of items:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">import </span><span>strawberry
+</span><span style="color:#b48ead;">from </span><span>typing </span><span style="color:#b48ead;">import </span><span>List
+</span><span>
+</span><span>@strawberry.</span><span style="color:#bf616a;">type
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">PaginatedPodcasts</span><span style="color:#eff1f5;">:
+</span><span>    items: List[Podcast]
+</span><span>    has_next_page: bool
+</span></code></pre>
+<p>We can now update our resolver to return a <code>PaginatedPodcasts</code> object:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">import </span><span>strawberry
+</span><span>
+</span><span>
+</span><span>@strawberry.</span><span style="color:#bf616a;">type
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">PodcastsQuery</span><span style="color:#eff1f5;">:
+</span><span>    </span><span style="color:#65737e;"># keep the previous fields
+</span><span>    </span><span style="color:#d08770;">...
+</span><span>
+</span><span>    @strawberry.</span><span style="color:#bf616a;">field
+</span><span>    </span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">podcasts</span><span>(</span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">page</span><span>: int = </span><span style="color:#d08770;">1</span><span>, </span><span style="color:#bf616a;">per_page</span><span>: int = </span><span style="color:#d08770;">10</span><span>) -&gt; PaginatedPodcasts:
+</span><span>        </span><span style="color:#65737e;"># ... same validation above
+</span><span>
+</span><span>        db_podcasts = </span><span style="color:#b48ead;">await </span><span>data.</span><span style="color:#bf616a;">paginate_podcast</span><span>(</span><span style="color:#bf616a;">page</span><span>=page, </span><span style="color:#bf616a;">per_page</span><span>=per_page)
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">PaginatedPodcasts</span><span>(
+</span><span>            </span><span style="color:#bf616a;">items</span><span>=[
+</span><span>                </span><span style="color:#bf616a;">Podcast</span><span>(
+</span><span>                    </span><span style="color:#bf616a;">id</span><span>=db_podcast.id,
+</span><span>                    </span><span style="color:#bf616a;">title</span><span>=db_podcast.title,
+</span><span>                    </span><span style="color:#bf616a;">description</span><span>=db_podcast.description,
+</span><span>                )
+</span><span>                </span><span style="color:#b48ead;">for </span><span>db_podcast </span><span style="color:#b48ead;">in </span><span>db_podcasts
+</span><span>            ],
+</span><span>            </span><span style="color:#bf616a;">has_next_page</span><span>=db_podcasts.</span><span style="color:#bf616a;">has_next</span><span>(),
+</span><span>        )
+</span></code></pre>
+<p>We have now updated our resolver to return a <code>PaginatedPodcasts</code> object instead
+of a list of podcasts. We are also returning a <code>has_next_page</code> field that tells
+the user if there's more pages.</p>
+<p>We can now test this by going to <a href="http://localhost:8000/graphql">GraphiQL</a> and
+running the following query:</p>
+<pre data-lang="graphql" style="background-color:#2b303b;color:#c0c5ce;" class="language-graphql "><code class="language-graphql" data-lang="graphql"><span style="color:#b48ead;">query </span><span>{
+</span><span>  podcasts(</span><span style="color:#bf616a;">page</span><span>: </span><span style="color:#d08770;">1</span><span>, </span><span style="color:#bf616a;">perPage</span><span>: </span><span style="color:#d08770;">1</span><span>) {
+</span><span>    items {
+</span><span>      title
+</span><span>    }
+</span><span>    hasNextPage
+</span><span>  }
+</span><span>}
+</span></code></pre>
+<p>This pagination works well for small datasets, but might not work super well for
+large one. Another approach could be to use a cursor based pagination. We'll
+also see a specification called Relay that allows us to create a cursor based
+pagination and it is quite popular in the GraphQL ecosystem.</p>
+
+        
+        <!-- 
+<div class="docs-navigation d-flex justify-content-between">
+  
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+          
+        
+      
+        
+        
+          
+        
+      
+        
+        
+          
+        
+      
+        
+        
+          
+        
+      
+        
+        
+          
+        
+      
+        
+        
+          
+            
+              
+              <a href="https:&#x2F;&#x2F;patrick91.github.io&#x2F;strawberry-workshop&#x2F;docs&#x2F;02-api&#x2F;our-first-api&#x2F;">
+                <div class="card my-1">
+                  <div class="card-body py-2">
+                    &larr; Our first API
+                  </div>
+                </div>
+              </a>
+            
+            
+            
+          
+        
+      
+        
+        
+          
+        
+      
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+      
+      
+        
+      
+    
+      
+      
+        
+      
+    
+      
+      
+        
+          
+          
+          <a class="ms-auto" href="https:&#x2F;&#x2F;patrick91.github.io&#x2F;strawberry-workshop&#x2F;docs&#x2F;04-dataloaders&#x2F;setup&#x2F;">
+            <div class="card my-1">
+              <div class="card-body py-2">
+                Setup &rarr;
+              </div>
+            </div>
+          </a>
+          
+          
+          
+        
+      
+    
+      
+      
+        
+      
+    
+      
+      
+        
+      
+    
+      
+      
+        
+      
+    
+  
+</div>
+ -->
+      </main>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+						<li class="list-inline-item">Built by <a href="https://twitter.com/patrick91">Patrick Arminio</a></li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://patrick91.github.io/strawberry-workshop/js/main.js" defer></script>
+
+  
+</body>
+</html>

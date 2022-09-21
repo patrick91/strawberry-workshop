@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://patrick91.github.io/strawberry-workshop/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://patrick91.github.io/strawberry-workshop/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://patrick91.github.io/strawberry-workshop/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Handling errors | Production GraphQL workshop</title>
+<meta name="description" content="Build a production ready GraphQL API using Strawberry GraphQL">
+<link rel="canonical" href="https://patrick91.github.io/strawberry-workshop/docs/06-errors/errors/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://patrick91.github.io/strawberry-workshop/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Docs",
+            "item": "https://patrick91.github.io/strawberry-workshop/docs/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "06 Errors",
+            "item": "https://patrick91.github.io/strawberry-workshop/docs/06-errors/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "Errors",
+            "item": "https://patrick91.github.io/strawberry-workshop/docs/06-errors/errors/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#fff">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://patrick91.github.io/strawberry-workshop/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://patrick91.github.io/strawberry-workshop/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://patrick91.github.io/strawberry-workshop/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://patrick91.github.io/strawberry-workshop/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://patrick91.github.io/strawberry-workshop">Production GraphQL workshop</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+				
+					<li class="nav-item">
+						<a class="nav-link" href="https://twitter.com/patrick91"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg><span class="ms-2 visually-hidden">Twitter</span></a>
+					</li>
+				
+					<li class="nav-item">
+						<a class="nav-link" href="https://github.com/patrick91/strawberry-workshop"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg><span class="ms-2 visually-hidden">GitHub</span></a>
+					</li>
+				
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item docs active">
+							<a class="nav-link" href="https://patrick91.github.io/strawberry-workshop/docs/01-getting-started/introduction/">Docs</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+	<nav class="docs-links" aria-label="Main navigation">
+			
+			
+			
+			
+					
+					
+					
+							<h3>Getting started</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/01-getting-started/introduction/">Introduction</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/01-getting-started/setup/">Setup</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/01-getting-started/03-graphiql/">GraphiQL</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Writing the API</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/02-api/how-it-works/">How GraphQL works</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/02-api/strawberry-overview/">Strawberry Overview</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/02-api/our-first-api/">Our first API</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Pagination</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/03-pagination/pagination/">Pagination</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/03-pagination/duplicated-code/">Duplicated code</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/03-pagination/cursor-pagination/">Cursor pagination</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Data fetching optimization</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/04-dataloaders/setup/">Setup</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/04-dataloaders/info/">Introspecting operations</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/04-dataloaders/dataloaders/">Dataloaders</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Authentication</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/05-authentication/authentication/">Authentication</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/05-authentication/permissions/">Permissions</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Errors</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link active" href="https://patrick91.github.io/strawberry-workshop/docs/06-errors/errors/">Handling errors</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Final touches</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/07-final-touches/safety/">Safety</a></li>
+							                           
+									<li><a class="docs-link" href="https://patrick91.github.io/strawberry-workshop/docs/07-final-touches/tracing/">Tracing</a></li>
+							
+					</ul>
+					
+					
+			
+	</nav>
+</div>
+
+	  
+  
+  <nav class="docs-toc d-none d-xl-block col-xl-3" aria-label="Secondary navigation">
+  	<div class="page-links">
+  			<h3>On this page</h3>
+  			<nav id="TableOfContents">
+  					<ul>
+  							
+  							<li><a href="https://patrick91.github.io/strawberry-workshop/docs/06-errors/errors/#expected-errors-vs-unexpected-errors">Expected errors vs unexpected errors</a></li>
+  							
+  							
+  							<li><a href="https://patrick91.github.io/strawberry-workshop/docs/06-errors/errors/#handling-errors-using-union-types">Handling errors using union types</a></li>
+  							
+  							
+  							<li><a href="https://patrick91.github.io/strawberry-workshop/docs/06-errors/errors/#dealing-with-unions-on-the-client">Dealing with unions on the client</a></li>
+  							
+  							
+  							<li><a href="https://patrick91.github.io/strawberry-workshop/docs/06-errors/errors/#improving-the-type-of-the-errors-using-interfaces">Improving the type of the errors using interfaces</a></li>
+  							
+  							
+  					</ul>
+  			</nav>
+  	</div>
+  </nav>
+  
+
+      <main class="docs-content col-lg-11 col-xl-9">
+        <h1>Handling errors</h1>
+        
+        <p>In this section we'll see how we can handle errors in our GraphQL API. As
+mentioned at the beginning any error thrown in the resolvers will be returned to
+the client in the <code>errors</code> field of the response. For example, trying to fetch
+the <code>hello</code> field from the following schema:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">import </span><span>strawberry
+</span><span>
+</span><span>@strawberry.</span><span style="color:#bf616a;">type
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Query</span><span style="color:#eff1f5;">:
+</span><span>    @strawberry.</span><span style="color:#bf616a;">field
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">hello</span><span>(</span><span style="color:#bf616a;">self</span><span>) -&gt; str:
+</span><span>        </span><span style="color:#b48ead;">raise </span><span style="color:#bf616a;">ValueError</span><span>(&quot;</span><span style="color:#a3be8c;">An example error</span><span>&quot;)
+</span><span>
+</span><span>schema = strawberry.</span><span style="color:#bf616a;">Schema</span><span>(</span><span style="color:#bf616a;">query</span><span>=Query)
+</span></code></pre>
+<p>will return a response like this:</p>
+<pre data-lang="json" style="background-color:#2b303b;color:#c0c5ce;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  &quot;</span><span style="color:#a3be8c;">data</span><span>&quot;: {
+</span><span>    &quot;</span><span style="color:#a3be8c;">hello</span><span>&quot;: </span><span style="color:#d08770;">null
+</span><span>  },
+</span><span>  &quot;</span><span style="color:#a3be8c;">errors</span><span>&quot;: [
+</span><span>    {
+</span><span>      &quot;</span><span style="color:#a3be8c;">message</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">An example error</span><span>&quot;,
+</span><span>      &quot;</span><span style="color:#a3be8c;">path</span><span>&quot;: [&quot;</span><span style="color:#a3be8c;">hello</span><span>&quot;],
+</span><span>      &quot;</span><span style="color:#a3be8c;">locations</span><span>&quot;: [
+</span><span>        {
+</span><span>          &quot;</span><span style="color:#a3be8c;">line</span><span>&quot;: </span><span style="color:#d08770;">4</span><span>,
+</span><span>          &quot;</span><span style="color:#a3be8c;">column</span><span>&quot;: </span><span style="color:#d08770;">9
+</span><span>        }
+</span><span>      ]
+</span><span>    }
+</span><span>  ]
+</span><span>}
+</span></code></pre>
+<p>One issue of errors in GraphQL is that they don't have a type system. This means
+that we can't differentiate between different types of errors easily, also they
+are harder to use in the client.</p>
+<p>Let's see a strategy to make working with errors easier in GraphQL. Let's
+improve the previous example, <code>subscribe_to_podcast</code> by handling the errors.
+This is how the resolver looks right now:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span>@strawberry.</span><span style="color:#bf616a;">type
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">PodcastsMutation</span><span style="color:#eff1f5;">:
+</span><span>    @strawberry.</span><span style="color:#bf616a;">mutation</span><span>(</span><span style="color:#bf616a;">permission_classes</span><span>=[IsAuthenticated])
+</span><span>    </span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">subscribe_to_podcast</span><span>(
+</span><span>        </span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">info</span><span>: Info[Context, </span><span style="color:#d08770;">None</span><span>], </span><span style="color:#bf616a;">id</span><span>: strawberry.</span><span style="color:#bf616a;">ID
+</span><span>    ) -&gt; bool:
+</span><span>        request = info.context[&quot;</span><span style="color:#a3be8c;">request</span><span>&quot;]
+</span><span>
+</span><span>        db_podcast = </span><span style="color:#b48ead;">await </span><span>data.</span><span style="color:#bf616a;">find_podcast_by_id</span><span>(</span><span style="color:#96b5b4;">id</span><span>)
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">if </span><span>not db_podcast:
+</span><span>            </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">False
+</span><span>
+</span><span>        user = </span><span style="color:#b48ead;">await </span><span>request.</span><span style="color:#bf616a;">get_user</span><span>()
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">try</span><span>:
+</span><span>            </span><span style="color:#b48ead;">await </span><span>data.</span><span style="color:#bf616a;">subscribe_to_podcast</span><span>(user, db_podcast)
+</span><span>        </span><span style="color:#b48ead;">except </span><span>data.AlreadySubscribedToPodcastError:
+</span><span>            </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">False
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">True
+</span></code></pre>
+<p>There are two cases where we return <code>False</code>:</p>
+<ol>
+<li>The podcast doesn't exist</li>
+<li>The user is already subscribed to the podcast</li>
+</ol>
+<p>Returning <code>False</code> is not ideal, because we don't know what happened and we won't
+be able to handle the error in the client, for example we can't show a different
+message to the user if the podcast doesn't exist or if the user is already</p>
+<h1 id="expected-errors-vs-unexpected-errors">Expected errors vs unexpected errors</h1>
+<p>Note how we are talking about expected errors here, the approach described here
+works well for expected errors, but it doesn't work for unexpected errors, and
+that's fine. Unexpected errors are, well, unexpected, so we shouldn't focus them
+as much as we do for expected errors. For example if the database is down, we
+shouldn't try to handle that error every resolver. In that case it is fine to
+return errors in the GraphQL response and let the client fail in a generic way.</p>
+<blockquote>
+<p>Note: permission classes always raise an error that will be returned in the
+errors field of the GraphQL response. A user not being logged in is usually an
+unexpected errors, as client would check if the user is logged in before
+allowing them do do any operation.</p>
+</blockquote>
+<h1 id="handling-errors-using-union-types">Handling errors using union types</h1>
+<p>Let's see how we can handle errors using union types, this is a great way of
+making sure that clients are aware of expected errors and that they can handle
+them in a nice way.</p>
+<p>As mentioned above we have 3 cases:</p>
+<ol>
+<li>The podcast doesn't exist</li>
+<li>The user is already subscribed to the podcast</li>
+<li>Everything went well</li>
+</ol>
+<p>We can use a union type to represent these cases, we'll need to create one type
+for each case, and then we can use a union type to represent all of them:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">from .</span><span>types </span><span style="color:#b48ead;">import </span><span>Podcast
+</span><span>
+</span><span>
+</span><span>@strawberry.</span><span style="color:#bf616a;">type
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">PodcastDoesNotExistError</span><span style="color:#eff1f5;">:
+</span><span>    message: str = &quot;</span><span style="color:#a3be8c;">Podcast does not exist</span><span>&quot;
+</span><span>
+</span><span>
+</span><span>@strawberry.</span><span style="color:#bf616a;">type
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">AlreadySubscribedToPodcastError</span><span style="color:#eff1f5;">:
+</span><span>    message: str = &quot;</span><span style="color:#a3be8c;">Already subscribed to podcast</span><span>&quot;
+</span><span>
+</span><span>
+</span><span>@strawberry.</span><span style="color:#bf616a;">type
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">SubscribeToPodcastSuccess</span><span style="color:#eff1f5;">:
+</span><span>    podcast: Podcast
+</span><span>
+</span><span>
+</span><span>SubscribeToPodcastResponse = strawberry.</span><span style="color:#bf616a;">union</span><span>(
+</span><span>    &quot;</span><span style="color:#a3be8c;">SubscribeToPodcastResponse</span><span>&quot;,
+</span><span>    (PodcastDoesNotExistError, AlreadySubscribedToPodcastError, SubscribeToPodcastSuccess),
+</span><span>)
+</span></code></pre>
+<p>then we can update our resolver to return the correct type based on the result
+of the operation:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span>@strawberry.</span><span style="color:#bf616a;">type
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">PodcastsMutation</span><span style="color:#eff1f5;">:
+</span><span>    @strawberry.</span><span style="color:#bf616a;">mutation</span><span>(</span><span style="color:#bf616a;">permission_classes</span><span>=[IsAuthenticated])
+</span><span>    </span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">subscribe_to_podcast</span><span>(
+</span><span>        </span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">info</span><span>: Info[Context, </span><span style="color:#d08770;">None</span><span>], </span><span style="color:#bf616a;">id</span><span>: strawberry.</span><span style="color:#bf616a;">ID
+</span><span>    ) -&gt; SubscribeToPodcastResponse:
+</span><span>        request = info.context[&quot;</span><span style="color:#a3be8c;">request</span><span>&quot;]
+</span><span>
+</span><span>        db_podcast = </span><span style="color:#b48ead;">await </span><span>data.</span><span style="color:#bf616a;">find_podcast_by_id</span><span>(</span><span style="color:#96b5b4;">id</span><span>)
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">if </span><span>not db_podcast:
+</span><span>            </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">PodcastDoesNotExistError</span><span>()
+</span><span>
+</span><span>        user = </span><span style="color:#b48ead;">await </span><span>request.</span><span style="color:#bf616a;">get_user</span><span>()
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">try</span><span>:
+</span><span>            </span><span style="color:#b48ead;">await </span><span>data.</span><span style="color:#bf616a;">subscribe_to_podcast</span><span>(user, db_podcast)
+</span><span>        </span><span style="color:#b48ead;">except </span><span>data.AlreadySubscribedToPodcastError:
+</span><span>            </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">AlreadySubscribedToPodcastError</span><span>()
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">SubscribeToPodcastSuccess</span><span>(
+</span><span>            </span><span style="color:#bf616a;">podcast</span><span>=Podcast.</span><span style="color:#bf616a;">from_db</span><span>(db_podcast),
+</span><span>        )
+</span></code></pre>
+<h1 id="dealing-with-unions-on-the-client">Dealing with unions on the client</h1>
+<p>Now that we have a union type, we can use it in the client to handle the errors.
+Unions have a special syntax in GraphQL, for our example we can use the
+following query to subscribe to a podcast and handle errors:</p>
+<pre data-lang="graphql" style="background-color:#2b303b;color:#c0c5ce;" class="language-graphql "><code class="language-graphql" data-lang="graphql"><span style="color:#b48ead;">mutation </span><span>{
+</span><span>  subscribeToPodcast(</span><span style="color:#bf616a;">id</span><span>: &quot;</span><span style="color:#a3be8c;">some id</span><span>&quot;) {
+</span><span>    __typename
+</span><span>
+</span><span>    ... on SubscribeToPodcastSuccess {
+</span><span>      podcast {
+</span><span>        id
+</span><span>      }
+</span><span>    }
+</span><span>  }
+</span><span>}
+</span></code></pre>
+<p>This query will return a response like this:</p>
+<pre data-lang="json" style="background-color:#2b303b;color:#c0c5ce;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  &quot;</span><span style="color:#a3be8c;">data</span><span>&quot;: {
+</span><span>    &quot;</span><span style="color:#a3be8c;">subscribeToPodcast</span><span>&quot;: {
+</span><span>      &quot;</span><span style="color:#a3be8c;">__typename</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">SubscribeToPodcastSuccess</span><span>&quot;,
+</span><span>      &quot;</span><span style="color:#a3be8c;">podcast</span><span>&quot;: {
+</span><span>        &quot;</span><span style="color:#a3be8c;">id</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">some id</span><span>&quot;
+</span><span>      }
+</span><span>    }
+</span><span>  }
+</span><span>}
+</span></code></pre>
+<p>The <code>__typename</code> field is used to know which type is being returned, which we
+can use on the frontend to show an error message if the type is not
+<code>SubscribeToPodcastSuccess</code>.</p>
+<p>so for example if we try to subscribe to a podcast that doesn't exist, we'll get
+a response like this:</p>
+<pre data-lang="json" style="background-color:#2b303b;color:#c0c5ce;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  &quot;</span><span style="color:#a3be8c;">data</span><span>&quot;: {
+</span><span>    &quot;</span><span style="color:#a3be8c;">subscribeToPodcast</span><span>&quot;: {
+</span><span>      &quot;</span><span style="color:#a3be8c;">__typename</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">PodcastDoesNotExistError</span><span>&quot;
+</span><span>    }
+</span><span>  }
+</span><span>}
+</span></code></pre>
+<p>and we can use the <code>__typename</code> field to show the following message to the user:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>Sorry, the podcast you are trying to subscribe to doesn&#39;t exist
+</span></code></pre>
+<h1 id="improving-the-type-of-the-errors-using-interfaces">Improving the type of the errors using interfaces</h1>
+<p>You might have noticed that in both errors we have a <code>message</code> field and we
+could use that on the client to show a message to the user. Currently if we want
+to fetch the message for both errors we'd need to run the following query:</p>
+<pre data-lang="graphql" style="background-color:#2b303b;color:#c0c5ce;" class="language-graphql "><code class="language-graphql" data-lang="graphql"><span style="color:#b48ead;">mutation </span><span>{
+</span><span>  subscribeToPodcast(</span><span style="color:#bf616a;">id</span><span>: &quot;</span><span style="color:#a3be8c;">some id</span><span>&quot;) {
+</span><span>    __typename
+</span><span>
+</span><span>    ... on PodcastDoesNotExistError {
+</span><span>      message
+</span><span>    }
+</span><span>
+</span><span>    ... on AlreadySubscribedToPodcastError {
+</span><span>      message
+</span><span>    }
+</span><span>  }
+</span><span>}
+</span></code></pre>
+<p>We can make this better by using interfaces, we can create an interface that
+defines the <code>message</code> field and then we can make both errors implement that
+type:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span>@strawberry.</span><span style="color:#bf616a;">interface
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Error</span><span style="color:#eff1f5;">:
+</span><span>    message: str
+</span><span>
+</span><span>
+</span><span>@strawberry.</span><span style="color:#bf616a;">type
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">PodcastDoesNotExistError</span><span style="color:#eff1f5;">(</span><span style="color:#a3be8c;">Error</span><span style="color:#eff1f5;">):
+</span><span>    message: str = &quot;</span><span style="color:#a3be8c;">Podcast not found</span><span>&quot;
+</span><span>
+</span><span>
+</span><span>@strawberry.</span><span style="color:#bf616a;">type
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">AlreadySubscribedToPodcastError</span><span style="color:#eff1f5;">(</span><span style="color:#a3be8c;">Error</span><span style="color:#eff1f5;">):
+</span><span>    message: str = &quot;</span><span style="color:#a3be8c;">You are already subscribed to this podcast</span><span>&quot;
+</span></code></pre>
+<p>Then we can update our query to look like this:</p>
+<pre data-lang="graphql" style="background-color:#2b303b;color:#c0c5ce;" class="language-graphql "><code class="language-graphql" data-lang="graphql"><span style="color:#b48ead;">mutation </span><span>{
+</span><span>  subscribeToPodcast(</span><span style="color:#bf616a;">id</span><span>: &quot;</span><span style="color:#a3be8c;">some id</span><span>&quot;) {
+</span><span>    __typename
+</span><span>
+</span><span>    ... on Error {
+</span><span>      message
+</span><span>    }
+</span><span>  }
+</span><span>}
+</span></code></pre>
+<p>This way we can fetch the message for both errors without having to list all the
+errors. And we are still able to fetch additional fields for the error if
+needed.</p>
+
+        
+        <!-- 
+<div class="docs-navigation d-flex justify-content-between">
+  
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+          
+        
+      
+        
+        
+          
+        
+      
+        
+        
+          
+            
+              
+              <a href="https:&#x2F;&#x2F;patrick91.github.io&#x2F;strawberry-workshop&#x2F;docs&#x2F;05-authentication&#x2F;permissions&#x2F;">
+                <div class="card my-1">
+                  <div class="card-body py-2">
+                    &larr; Permissions
+                  </div>
+                </div>
+              </a>
+            
+            
+            
+          
+        
+      
+        
+        
+          
+        
+      
+        
+        
+          
+        
+      
+        
+        
+          
+        
+      
+        
+        
+          
+        
+      
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+      
+      
+        
+      
+    
+      
+      
+        
+      
+    
+      
+      
+        
+      
+    
+      
+      
+        
+      
+    
+      
+      
+        
+      
+    
+      
+      
+        
+          
+          
+          <a class="ms-auto" href="https:&#x2F;&#x2F;patrick91.github.io&#x2F;strawberry-workshop&#x2F;docs&#x2F;07-final-touches&#x2F;safety&#x2F;">
+            <div class="card my-1">
+              <div class="card-body py-2">
+                Safety &rarr;
+              </div>
+            </div>
+          </a>
+          
+          
+          
+        
+      
+    
+  
+</div>
+ -->
+      </main>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+						<li class="list-inline-item">Built by <a href="https://twitter.com/patrick91">Patrick Arminio</a></li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://patrick91.github.io/strawberry-workshop/js/main.js" defer></script>
+
+  
+</body>
+</html>
