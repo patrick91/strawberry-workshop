@@ -4,17 +4,14 @@ from typing import Protocol, TypedDict, cast
 from asgiref.sync import sync_to_async
 
 from django.contrib.auth.middleware import get_user
-from django.contrib.auth.models import AnonymousUser
 from django.http import HttpRequest, HttpResponse
 
 from strawberry.django.views import AsyncGraphQLView
 
-from users.models import User
-
 
 # See https://github.com/python/mypy/issues/10750
 class _GetUser(Protocol):
-    async def __call__(self) -> User | AnonymousUser:
+    async def __call__(self):
         ...
 
 
