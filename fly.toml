@@ -6,6 +6,9 @@ kill_timeout = 5
 primary_region = "lax"
 processes = []
 
+[deploy]
+  release_command = "pdm migrate"
+
 [build]
 
 [env]
