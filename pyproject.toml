@@ -64,7 +64,6 @@ import-feeds = {composite = [
   "python cli.py import-feeds https://talkpython.fm/episodes/rss",
   "python cli.py import-feeds https://realpython.com/podcasts/rpp/feed",
   "python cli.py import-feeds https://pythonbytes.fm/episodes/rss",
-  "python cli.py import-feeds https://www.pythonpodcast.com/feed/mp3/",
 ]}
 migrate = "python manage.py migrate"
 start = "gunicorn -b 0.0.0.0:8000 podcast.asgi:application -k uvicorn.workers.UvicornWorker"
@@ -91,6 +90,7 @@ dependencies = [
     "gunicorn>=20.1.0",
     "uvicorn>=0.21.1",
     "dj-database-url>=1.3.0",
+    "psycopg2-binary>=2.9.6",
 ]
 description = ""
 license = {text = "MIT"}

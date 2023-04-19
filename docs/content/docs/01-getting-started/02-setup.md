@@ -61,6 +61,5 @@ python manage.py migrate
 python cli.py import-feeds \
     https://talkpython.fm/episodes/rss \
     https://realpython.com/podcasts/rpp/feed \
-    https://pythonbytes.fm/episodes/rss \
-    https://www.pythonpodcast.com/feed/mp3/
+    https://pythonbytes.fm/episodes/rss
 ```

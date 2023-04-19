@@ -37,6 +37,7 @@ platformdirs==3.2.0
 pluggy==1.0.0
 podcastparser==0.6.10
 protobuf==4.22.3
+psycopg2-binary==2.9.6
 pycodestyle==2.8.0
 pyflakes==2.4.0
 pygments==2.15.1
