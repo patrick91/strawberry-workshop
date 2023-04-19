@@ -4,15 +4,12 @@ tasks:
       pyenv install 3.10.5
       pyenv global 3.10.5
 
-      pip install poetry
-      poetry config virtualenvs.create true
-      poetry config virtualenvs.in-project true
-      poetry env use python
-      poetry install
+      pip install pdm
+      pdm install
     command: |
-      poetry run poe import-data
-      poetry run poe migrate
-      poetry run poe server
+      pdm import-feeds
+      pdm migrate
+      pdm dev
 
 ports:
   - port: 8000

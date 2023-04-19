@@ -60,11 +60,11 @@ plugins = ["strawberry.ext.mypy_plugin"]
 
 [tool.pdm.scripts]
 dev = "python manage.py runserver_plus --print-sql"
-import-data = {composite = [
-  "python cli.py https://talkpython.fm/episodes/rss",
-  "python cli.py https://realpython.com/podcasts/rpp/feed",
-  "python cli.py https://pythonbytes.fm/episodes/rss",
-  "python cli.py https://www.pythonpodcast.com/feed/mp3/",
+import-feeds = {composite = [
+  "python cli.py import-feeds https://talkpython.fm/episodes/rss",
+  "python cli.py import-feeds https://realpython.com/podcasts/rpp/feed",
+  "python cli.py import-feeds https://pythonbytes.fm/episodes/rss",
+  "python cli.py import-feeds https://www.pythonpodcast.com/feed/mp3/",
 ]}
 migrate = "python manage.py migrate"
 start = "gunicorn -b 0.0.0.0:8000 podcast.asgi:application -k uvicorn.workers.UvicornWorker"
