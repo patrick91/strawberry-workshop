@@ -43,7 +43,7 @@ data to Datadog.
 Getting up and running with datadog or other tracing tools takes a bit of time,
 so I'll share a screenshot of what you'll see in the dashboard:
 
-<img src="/tracing.png" alt="Tracing" width="100%"/>
+<img src="https://raw.githubusercontent.com/patrick91/strawberry-workshop/main/docs/static/tracing.png" alt="Tracing" width="100%"/>
 
 This view will allow to see the execution time of each field, and the time spend
 executing the whole query. You'll also be able to setup filters and metrics on
