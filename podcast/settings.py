@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-!)(_%38lglv)i*ruqsz-d=v@_)6gbr-ek99wa#64(-_)76)g7^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["strawberry-workshop.fly.dev"]
+ALLOWED_HOSTS = ["localhost", "strawberry-workshop.fly.dev"]
 
 
 # Application definition
