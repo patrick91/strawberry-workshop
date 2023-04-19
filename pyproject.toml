@@ -18,7 +18,6 @@ rich = "^12.4.4"
 strawberry-graphql = "^0.117.1"
 typer = "^0.4.2"
 
-
 [tool.pdm]
 [tool.pdm.dev-dependencies]
 dev = [
@@ -60,11 +59,16 @@ testpaths = ["tests/"]
 plugins = ["strawberry.ext.mypy_plugin"]
 
 [tool.pdm.scripts]
+dev = "python manage.py runserver_plus --print-sql"
+import-data = {composite = [
+  "python cli.py https://talkpython.fm/episodes/rss",
+  "python cli.py https://realpython.com/podcasts/rpp/feed",
+  "python cli.py https://pythonbytes.fm/episodes/rss",
+  "python cli.py https://www.pythonpodcast.com/feed/mp3/",
+]}
 migrate = "python manage.py migrate"
-server = "python manage.py runserver"
-server-debug = "poetry run ddtrace-run python manage.py runserver_plus --print-sql"
+start = "gunicorn -b 0.0.0.0:8000 podcast.asgi:application -k uvicorn.workers.UvicornWorker"
 test = "pytest"
-import-data = {composite = ["python cli.py https://talkpython.fm/episodes/rss", "python cli.py https://realpython.com/podcasts/rpp/feed", "python cli.py https://pythonbytes.fm/episodes/rss", "python cli.py https://www.pythonpodcast.com/feed/mp3/"]}
 
 [project]
 # PEP 621 project metadata
@@ -83,6 +87,9 @@ dependencies = [
   "django-cursor-pagination<1.0.0,>=0.2.0",
   "ddtrace<2.0.0,>=1.2.2",
   "strawberry-graphql<1.0.0,>=0.117.1",
+  "django-extensions>=3.2.1",
+  "gunicorn>=20.1.0",
+  "uvicorn>=0.21.1",
 ]
 description = ""
 license = {text = "MIT"}
@@ -91,3 +98,9 @@ requires-python = ">=3.10,<4.0"
 version = "0.1.0"
 
 [project.urls]
+
+[tool.ruff]
+select = [
+  "E",
+  "F",
+]
